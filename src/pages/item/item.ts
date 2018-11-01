@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the ItemPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ItensProvider } from '../../providers/itens/itens';
+
+import { Item } from '../../interfaces/Item';
 
 @Component({
   selector: 'page-item',
@@ -14,11 +11,50 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ItemPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  idItem: number;
+  nomeItem: string;
+  marcaItem: string;
+  valorItem: number;
+
+  novo: boolean;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public itensProvider: ItensProvider)
+  {
+    this.idItem = this.navParams.get('id');
+    this.novo = this.navParams.get('novo');
+
+    if(!this.novo){
+      let item: Item = this.itensProvider.getItem(this.idItem);
+  
+      this.nomeItem = item.nome;
+      this.marcaItem = item.marca;
+      this.valorItem = item.valor;
+    } else {
+      this.nomeItem = "";
+      this.marcaItem = "";
+      this.valorItem = 0;
+    }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ItemPage');
+  alterar() {
+    this.itensProvider.editaItem(
+      this.idItem,
+      this.nomeItem,
+      this.marcaItem,
+      this.valorItem
+    );
+    this.navCtrl.pop();
+  }
+
+  incluir() {
+    this.itensProvider.adicionaItem(
+      this.nomeItem,
+      this.marcaItem,
+      this.valorItem
+    );
+    this.navCtrl.pop();
   }
 
 }

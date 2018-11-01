@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the CompraPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ComprasProvider } from '../../providers/compras/compras';
+import { ItensProvider } from '../../providers/itens/itens';
+
+import { Compra } from '../../interfaces/compra';
+import { Item } from '../../interfaces/Item';
 
 @Component({
   selector: 'page-compra',
@@ -14,11 +13,50 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class CompraPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  idCompra: number;
+  idItemCompra: number;
+  quantidadeCompra: number;
+
+  itens: Array<Item>;
+
+  novo: boolean;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public comprasProvider: ComprasProvider,
+    public itensProvider: ItensProvider
+    )
+  {
+    this.idCompra = this.navParams.get('id');
+    this.novo = this.navParams.get('novo');
+
+    this.itens = this.itensProvider.getItens();
+
+    if(!this.novo){
+      let compra: Compra = this.comprasProvider.getCompra(this.idCompra);
+  
+      this.idItemCompra = compra.idItem;
+      this.quantidadeCompra = compra.quantidade;
+    } else {
+      this.idItemCompra = this.itens[0].id;
+      this.quantidadeCompra = 1;
+    }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CompraPage');
+  alterar() {
+    this.comprasProvider.editaCompra(
+      this.idCompra,
+      this.idItemCompra,
+      this.quantidadeCompra
+    );
+    this.navCtrl.pop();
   }
 
+  incluir() {
+    this.comprasProvider.adicionaCompra(
+      this.idItemCompra,
+      this.quantidadeCompra
+    );
+    this.navCtrl.pop();
+  }
 }

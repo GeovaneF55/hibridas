@@ -6,7 +6,34 @@
 
 </ion-header>
 
-
 <ion-content padding>
+  <ion-list>
+    <ion-item-sliding #slidingItem *ngFor="let i of itens">
+      <ion-item>
+        <h2>{{ i.nome }}</h2>
+        <div class="containerIntro">
+          <h3>Marca:</h3> <p>{{ i.marca }}</p>
+        </div>
+        <div class="containerIntro">
+          <h3>Valor:</h3> <p>{{ i.valor | currency:"BRL":true:"1.2" }}</p>
+        </div>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="primary" (click)="editaItem(i.id, slidingItem)">
+          <ion-icon name="create"></ion-icon>
+          Editar
+        </button>
+        <button ion-button color="danger" (click)="deletaItem(i.id)">
+          <ion-icon name="trash"></ion-icon>
+          Deletar
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 
+  <ion-fab bottom right>
+    <button ion-fab (click)="novoItem()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
