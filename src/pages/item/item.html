@@ -6,33 +6,54 @@
 
 </ion-header>
 
-
 <ion-content class="no-scroll" padding>
   <ion-list>
     <ion-item>
       <ion-label color="primary">Nome:</ion-label>
       <ion-input type="text" placeholder="Nome"
-        [(ngModel)]="nomeItem" required></ion-input>
+        [(ngModel)]="nomeItem" #nome="ngModel" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label color="primary">Marca:</ion-label>
       <ion-input type="text" placeholder="Marca" 
-        [(ngModel)]="marcaItem" required></ion-input>
+        [(ngModel)]="marcaItem" #marca="ngModel" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label color="primary">Valor:</ion-label>
       <ion-input type="number" placeholder="Valor"
-        [(ngModel)]="valorItem" required></ion-input>
+        [(ngModel)]="valorItem" #valor="ngModel" required></ion-input>
     </ion-item>
   </ion-list>
 
+  <ion-card class="alert" *ngIf="!nome.valid && nome.dirty">
+    <ion-card-content>
+      <p>O nome do item não pode ficar em branco.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="alert" *ngIf="!marca.valid && marca.dirty">
+    <ion-card-content>
+      <p>A marca do item não pode ficar em branco.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="alert" *ngIf="!valor.valid && valor.dirty">
+    <ion-card-content>
+      <p>O valor do item não pode ficar em branco.</p>
+    </ion-card-content>
+  </ion-card>
+
   <ion-fab bottom right>
-    <button ion-fab (click)="alterar()" [class.invisivel]="novo">
+    <button ion-fab (click)="alterar()" 
+    [disabled]="!nome.valid || !marca.valid || !valor.valid"
+    [class.invisivel]="novo">
       <ion-icon name="checkmark"></ion-icon>
     </button>
   </ion-fab>
   <ion-fab bottom right>
-    <button ion-fab (click)="incluir()" [class.invisivel]="!novo">
+    <button ion-fab (click)="incluir()"
+    [disabled]="!nome.valid || !marca.valid || !valor.valid"
+    [class.invisivel]="!novo">
       <ion-icon name="checkmark"></ion-icon>
     </button>
   </ion-fab>

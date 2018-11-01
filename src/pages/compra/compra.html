@@ -6,12 +6,11 @@
 
 </ion-header>
 
-
-<ion-content padding>
+<ion-content class="no-scroll" padding>
   <ion-list>
     <ion-item>
       <ion-label color="primary">Item:</ion-label>
-      <ion-select [(ngModel)]="idItemCompra">
+      <ion-select [(ngModel)]="idItemCompra" #item="ngModel" required>
         <ion-option *ngFor="let i of itens" value="{{ i.id }}">
           {{ i.nome }}
         </ion-option>
@@ -19,18 +18,34 @@
     </ion-item>
     <ion-item>
       <ion-label color="primary">Quantidade:</ion-label>
-      <ion-input type="number" placeholder="Quntidade"
-        [(ngModel)]="quantidadeCompra" required></ion-input>
+      <ion-input type="number" placeholder="Quantidade"
+        [(ngModel)]="quantidadeCompra" #quantidade="ngModel" required></ion-input>
     </ion-item>
   </ion-list>
 
+  <ion-card class="alert" *ngIf="!item.valid && item.dirty">
+    <ion-card-content>
+      <p>O item da compra deve ser selecionado.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="alert" *ngIf="!quantidade.valid && quantidade.dirty">
+    <ion-card-content>
+      <p>A quantidade da compra não pode ficar em branco.</p>
+    </ion-card-content>
+  </ion-card>
+
   <ion-fab bottom right>
-    <button ion-fab (click)="alterar()" [class.invisivel]="novo">
+    <button ion-fab (click)="alterar()"
+    [class.invisivel]="novo"
+    [disabled]="!item.valid || !quantidade.valid">
       <ion-icon name="checkmark"></ion-icon>
     </button>
   </ion-fab>
   <ion-fab bottom right>
-    <button ion-fab (click)="incluir()" [class.invisivel]="!novo">
+    <button ion-fab (click)="incluir()"
+    [class.invisivel]="!novo"
+    [disabled]="!item.valid || !quantidade.valid">
       <ion-icon name="checkmark"></ion-icon>
     </button>
   </ion-fab>
