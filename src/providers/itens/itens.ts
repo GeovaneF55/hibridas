@@ -1,52 +1,103 @@
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/toPromise'
 
 import { Item } from '../../interfaces/Item';
 
 @Injectable()
 export class ItensProvider {
 
-  itens: Array<Item> = [
-    { id: 1 , nome: 'Item 1' , marca: 'Marca X' , valor: 32.00 },
-    { id: 2 , nome: 'Item 2' , marca: 'Marca Y' , valor: 27.00 },
-    { id: 3 , nome: 'Item 3' , marca: 'Marca Z' , valor: 16.00 },
-    { id: 4 , nome: 'Item 4' , marca: 'Marca W' , valor: 8.00 }
-  ];
-
-  ultimoId: number = 4; 
+  //url:string = "https://my-json-server.typicode.com/GeovaneF55/hibridas-db";
+  url:string = "http://localhost:3000";
 
   constructor(public http: Http) {
     console.log('Hello ItensProvider Provider');
   }
 
-  getItens() {
-    return this.itens;
+  getItens(): Promise<Item[]> {
+    return new Promise(resolve => {
+      this.http.get(this.url + "/item")
+      .toPromise()
+      .then( resposta => {
+        let dados = resposta.json();
+        let itens : Array<Item> = [];
+        for(let i=0; i<dados.length; i++){
+          itens.push({
+            id: dados[i].id,
+            nome: dados[i].nome,
+            marca: dados[i].marca,
+            valor: dados[i].valor
+          });
+        }
+        resolve(itens);
+      });
+    });
   }
 
-  getItem(cod: number) {
-    return this.itens.find(item => item.id == cod);
+  getItem(cod: number): Promise<Item> {
+    return new Promise(resolve => {
+      this.http.get(this.url + "/item/" + cod)
+      .toPromise()
+      .then( resposta => {
+        let dados = resposta.json();
+        let item: Item = {
+            id: dados.id,
+            nome: dados.nome,
+            marca: dados.marca,
+            valor: dados.valor
+          }
+        resolve(item);
+      });
+    });
   }
 
-  editaItem(id: number, nome: string, marca: string, valor: number) {
-    let index = this.itens.findIndex(item => item.id == id);
-    
-    this.itens[index].nome = nome;
-    this.itens[index].marca = marca;
-    this.itens[index].valor = valor;
-  }
+  editaItem(id: number, nome: string, marca: string, valor: number): Promise <any> {
+    let headers = new Headers({"Content-type": "application/json"});
 
-  deletaItem(id: number) {
-    let index = this.itens.findIndex(item => item.id == id);
-    this.itens.splice(index,1);
-  }
-
-  adicionaItem(nome: string, marca: string, valor: number) {
-    this.ultimoId++;
-    this.itens.push({
-      id: this.ultimoId,
+    let item = {
       nome: nome,
       marca: marca,
       valor: valor
+    };
+
+    let body = JSON.stringify(item);
+
+    return new Promise( resolve => {
+      this.http.put(this.url + '/item/' + id, body, { headers: headers })
+      .toPromise()
+      .then( resposta => {
+        resolve(resposta.json());
+      });
+    });
+  }
+
+  deletaItem(id: number): Promise <any> {
+    return new Promise( resolve => {
+      this.http.delete(this.url + "/item/" + id)
+      .toPromise()
+      .then(resposta => {
+        resolve(resposta.json());
+      });
+    });
+  }
+
+  adicionaItem(nome: string, marca: string, valor: number): Promise <any> {
+    let headers = new Headers({"Content-type": "application/json"});
+
+    let item = {
+      nome: nome,
+      marca: marca,
+      valor: valor
+    };
+
+    let body = JSON.stringify(item);
+
+    return new Promise( resolve => {
+      this.http.post(this.url + '/item', body, { headers: headers })
+      .toPromise()
+      .then( resposta => {
+        resolve(resposta.json());
+      });
     });
   }
 

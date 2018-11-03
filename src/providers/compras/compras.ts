@@ -1,22 +1,15 @@
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/toPromise'
 
 import { ItensProvider } from '../itens/itens';
 
 import { Compra } from '../../interfaces/compra';
-import { Item } from '../../interfaces/Item';
-
 @Injectable()
 export class ComprasProvider {
 
-  compras: Array<Compra> = [
-    { id: 1, idItem: 1, quantidade: 1 },
-    { id: 2, idItem: 2, quantidade: 2 },
-    { id: 3, idItem: 3, quantidade: 3 },
-    { id: 4, idItem: 4, quantidade: 4 },
-  ];
-
-  ultimoId: number = 4;
+  //url:string = "https://my-json-server.typicode.com/GeovaneF55/hibridas-db";
+  url:string = "http://localhost:3000";
 
   constructor(public http: Http,
     public itensProvider: ItensProvider)
@@ -24,41 +17,91 @@ export class ComprasProvider {
     console.log('Hello ComprasProvider Provider');
   }
 
-  getCompras() {
-    return this.compras;
+  getCompras(): Promise<Compra[]> {
+
+    return new Promise(resolve => {
+      this.http.get(this.url + "/compra")
+      .toPromise()
+      .then( resposta => {
+        let dados = resposta.json();
+        let compras : Array<Compra> = [];
+        for(let i=0; i<dados.length; i++){
+          compras.push({
+            id: dados[i].id,
+            idItem: dados[i].idItem,
+            quantidade: dados[i].quantidade
+          });
+        }
+        resolve(compras);
+      });
+    });
   }
 
-  getCompra(cod: number) {
-    return this.compras.find(compra => compra.id == cod);
+  getCompra(cod: number): Promise<Compra> {
+
+    return new Promise(resolve => {
+      this.http.get(this.url + "/compra/" + cod)
+      .toPromise()
+      .then( resposta => {
+        let dados = resposta.json();
+        let compra: Compra = {
+            id: dados.id,
+            idItem: dados.idItem,
+            quantidade: dados.quantidade
+          }
+        resolve(compra);
+      });
+    });
   }
 
-  getValorItem(idItem: number) {
-    let item: Item = this.itensProvider.getItem(idItem);
-    if(item){
-      return item.valor;
-    } else {
-      return 0;
-    }
-  }
+  editaCompra(id: number, idItem: number, quantidade: number): Promise<any> {
 
-  editaCompra(id: number, idItem: number, quantidade: number) {
-    let index = this.compras.findIndex(compra => compra.id == id);
+    let headers = new Headers({"Content-type": "application/json"});
 
-    this.compras[index].idItem = idItem;
-    this.compras[index].quantidade = quantidade;
-  }
-
-  deletaCompra(id: number) {
-    let index = this.compras.findIndex(compra => compra.id == id);
-    this.compras.splice(index,1);
-  }
-
-  adicionaCompra(idItem: number, quantidade: number) {
-    this.ultimoId++;
-    this.compras.push({
-      id: this.ultimoId,
+    let compra = {
       idItem: idItem,
       quantidade: quantidade
+    };
+
+    let body = JSON.stringify(compra);
+
+    return new Promise( resolve => {
+      this.http.put(this.url + '/compra/' + id, body, { headers: headers })
+      .toPromise()
+      .then( resposta => {
+        resolve(resposta.json());
+      });
+    });
+  }
+
+  deletaCompra(id: number): Promise<any> {
+
+    return new Promise( resolve => {
+      this.http.delete(this.url + "/compra/" + id)
+      .toPromise()
+      .then(resposta => {
+        resolve(resposta.json());
+      });
+    });
+  }
+
+  adicionaCompra(idItem: number, quantidade: number): Promise<any> {
+
+    let headers = new Headers({"Content-type": "application/json"});
+
+    let compra = {
+      idItem: idItem,
+      quantidade: quantidade
+    };
+
+    let body = JSON.stringify(compra);
+  
+    return new Promise( resolve => {
+      this.http.post(this.url + '/compra', body, { headers: headers })
+      .toPromise()
+      .then( resposta => {
+        resolve(resposta.json());
+      });
     });
   }
 

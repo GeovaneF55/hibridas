@@ -7,6 +7,7 @@ import { ItensProvider } from '../../providers/itens/itens';
 import { CompraPage } from '../compra/compra';
 
 import { Compra } from '../../interfaces/compra';
+import { Item } from '../../interfaces/Item';
 
 @Component({
   selector: 'page-compras',
@@ -15,6 +16,7 @@ import { Compra } from '../../interfaces/compra';
 export class ComprasPage {
 
   compras: Array<Compra>;
+  itens: Array<Item>;
   total: number;
 
   constructor(public navCtrl: NavController,
@@ -22,17 +24,27 @@ export class ComprasPage {
     public comprasProvider: ComprasProvider,
     public itensProvider: ItensProvider)
   {
-      this.compras = this.comprasProvider.getCompras();  
+
+    this.itensProvider.getItens().then( dados => {
+      this.itens = dados;
+    });
+
+    this.comprasProvider.getCompras().then( dados => {
+      this.compras = dados;  
       this.makeTotal();
+    });
   }
 
   ionViewDidEnter() {
-    this.compras = this.comprasProvider.getCompras();
-    this.makeTotal();
+    this.comprasProvider.getCompras().then( dados => {
+      this.compras = dados;  
+      this.makeTotal();
+    });
   }
 
   nomeItem(cod: number) {
-    let item = this.itensProvider.getItem(cod);
+    let item: Item = this.itens.find(item => item.id == cod);
+
     if(item){
       return item.nome;
     } else {
@@ -41,11 +53,17 @@ export class ComprasPage {
   }
 
   valItem(cod: number) {
-    return this.comprasProvider.getValorItem(cod);
+    let item: Item = this.itens.find(item => item.id == cod);
+
+    if(item){
+      return item.valor;
+    } else {
+      return 0.0;
+    }
   }
 
   makeSubTotal(cod: number) {
-    let compra: Compra = this.comprasProvider.getCompra(cod);  
+    let compra: Compra = this.compras.find(compra => compra.id == cod);
 
     return compra.quantidade * this.valItem(compra.idItem);
   }
@@ -68,10 +86,12 @@ export class ComprasPage {
 
   deletaCompra(codigo) {
     let cod = parseInt(codigo);
-    this.comprasProvider.deletaCompra(cod);
-
-    this.compras = this.comprasProvider.getCompras();
-    this.makeTotal();
+    this.comprasProvider.deletaCompra(cod).then( response => {
+      this.comprasProvider.getCompras().then( dados => {
+        this.compras = dados;  
+        this.makeTotal();
+      });
+    });
   }
 
   novaCompra() {

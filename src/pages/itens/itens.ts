@@ -19,11 +19,15 @@ export class ItensPage {
     public navParams: NavParams,
     public itensProvider: ItensProvider)
   {
-    this.itens = itensProvider.getItens();
+    this.itensProvider.getItens().then( dados => {
+      this.itens = dados;
+    });
   }
 
   ionViewDidEnter() {
-    this.itens = this.itensProvider.getItens();
+    this.itensProvider.getItens().then( dados => {
+      this.itens = dados;
+    });
   }
 
   editaItem(codigo, slidingItem: ItemSliding) {
@@ -34,7 +38,11 @@ export class ItensPage {
 
   deletaItem(codigo) {
     let cod = parseInt(codigo);
-    this.itensProvider.deletaItem(cod);
+    this.itensProvider.deletaItem(cod).then(response => {
+      this.itensProvider.getItens().then( dados => {
+        this.itens = dados;
+      });
+    });
   }
 
   novoItem() {

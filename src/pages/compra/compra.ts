@@ -30,17 +30,21 @@ export class CompraPage {
     this.idCompra = this.navParams.get('id');
     this.novo = this.navParams.get('novo');
 
-    this.itens = this.itensProvider.getItens();
+    this.itensProvider.getItens().then( itens => {
+      this.itens = itens;
 
-    if(!this.novo){
-      let compra: Compra = this.comprasProvider.getCompra(this.idCompra);
-  
-      this.idItemCompra = compra.idItem;
-      this.quantidadeCompra = compra.quantidade;
-    } else {
-      this.idItemCompra = this.itens[0].id;
-      this.quantidadeCompra = 1;
-    }
+      if(!this.novo){
+        this.comprasProvider.getCompra(this.idCompra).then( dados => {
+          let compra: Compra = dados;
+
+          this.idItemCompra = compra.idItem;
+          this.quantidadeCompra = compra.quantidade;
+        });
+      } else {
+        this.idItemCompra = this.itens[0].id;
+        this.quantidadeCompra = 1;
+      }
+    });
   }
 
   alterar() {

@@ -26,11 +26,13 @@ export class ItemPage {
     this.novo = this.navParams.get('novo');
 
     if(!this.novo){
-      let item: Item = this.itensProvider.getItem(this.idItem);
-  
-      this.nomeItem = item.nome;
-      this.marcaItem = item.marca;
-      this.valorItem = item.valor;
+      this.itensProvider.getItem(this.idItem).then( dados => {
+        let item: Item = dados;
+
+        this.nomeItem = item.nome;
+        this.marcaItem = item.marca;
+        this.valorItem = item.valor;
+      });
     } else {
       this.nomeItem = "";
       this.marcaItem = "";
