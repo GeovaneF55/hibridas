@@ -36,6 +36,10 @@ export class ComprasPage {
   }
 
   ionViewDidEnter() {
+    this.itensProvider.getItens().then( dados => {
+      this.itens = dados;
+    });
+
     this.comprasProvider.getCompras().then( dados => {
       this.compras = dados;  
       this.makeTotal();

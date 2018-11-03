@@ -31,6 +31,12 @@
     </ion-item-sliding>
   </ion-list>
 
+  <ion-card class="empty" *ngIf="itens === undefined || itens.length == 0">
+    <ion-card-content>
+      <p>A lista de Itens está vazia.</p>
+    </ion-card-content>
+  </ion-card>
+
   <ion-fab bottom right>
     <button ion-fab (click)="novoItem()">
       <ion-icon name="add"></ion-icon>

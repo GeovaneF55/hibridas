@@ -39,8 +39,15 @@
     </ion-item-sliding>
   </ion-list>
 
+  <ion-card class="empty" *ngIf="compras === undefined || compras.length == 0">
+    <ion-card-content>
+      <p>A lista de Compras está vazia.</p>
+    </ion-card-content>
+  </ion-card>
+
   <ion-fab bottom right>
-    <button ion-fab (click)="novaCompra()">
+    <button ion-fab (click)="novaCompra()"
+    [disabled]="itens === undefined || itens.length == 0">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

@@ -33,6 +33,8 @@ export class CompraPage {
     this.itensProvider.getItens().then( itens => {
       this.itens = itens;
 
+      console.log(this.itens);
+
       if(!this.novo){
         this.comprasProvider.getCompra(this.idCompra).then( dados => {
           let compra: Compra = dados;
