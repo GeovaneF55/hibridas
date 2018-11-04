@@ -8,8 +8,8 @@ import { Compra } from '../../interfaces/compra';
 @Injectable()
 export class ComprasProvider {
 
-  //url:string = "https://my-json-server.typicode.com/GeovaneF55/hibridas-db";
-  url:string = "http://localhost:3000";
+  url:string = "https://my-json-server.typicode.com/GeovaneF55/hibridas-db";
+  //url:string = "http://localhost:3000";
 
   constructor(public http: Http,
     public itensProvider: ItensProvider)

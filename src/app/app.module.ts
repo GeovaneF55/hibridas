@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+//nativo 
+import { CameraPage } from '../pages/camera/camera';
+
 // FireBase DB
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -22,6 +25,7 @@ import { ItensProvider } from '../providers/itens/itens';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ItensPage,
     ItemPage,
     ComprasPage,
-    CompraPage
+    CompraPage,
+    CameraPage
   ],
   imports: [
     BrowserModule,
@@ -46,11 +51,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ItensPage,
     ItemPage,
     ComprasPage,
-    CompraPage
+    CompraPage,
+    CameraPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ComprasProvider,
     ItensProvider
