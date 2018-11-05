@@ -1,8 +1,8 @@
-export const firebaseConfig = {
-  apiKey: "AIzaSyB_zTsk-VkdkxRKmmQJRQUadHVZ0TP8TYk",
-  authDomain: "hibridas-8459f.firebaseapp.com",
-  databaseURL: "https://hibridas-8459f.firebaseio.com",
-  projectId: "hibridas-8459f",
-  storageBucket: "hibridas-8459f.appspot.com",
-  messagingSenderId: "405795300639"
+export default {
+  apiKey: "AIzaSyC5n2GLIO59KJ7XSZm79wRw3nzdbLpEq0M",
+    authDomain: "hibridas-29499.firebaseapp.com",
+    databaseURL: "https://hibridas-29499.firebaseio.com",
+    projectId: "hibridas-29499",
+    storageBucket: "",
+    messagingSenderId: "86475755663"
 };

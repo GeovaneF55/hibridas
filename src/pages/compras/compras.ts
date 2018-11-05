@@ -46,7 +46,7 @@ export class ComprasPage {
     });
   }
 
-  nomeItem(cod: number) {
+  nomeItem(cod: String) {
     let item: Item = this.itens.find(item => item.id == cod);
 
     if(item){
@@ -56,7 +56,7 @@ export class ComprasPage {
     }
   }
 
-  valItem(cod: number) {
+  valItem(cod: string) {
     let item: Item = this.itens.find(item => item.id == cod);
 
     if(item){
@@ -66,7 +66,7 @@ export class ComprasPage {
     }
   }
 
-  makeSubTotal(cod: number) {
+  makeSubTotal(cod: string) {
     let compra: Compra = this.compras.find(compra => compra.id == cod);
 
     return compra.quantidade * this.valItem(compra.idItem);
@@ -84,12 +84,12 @@ export class ComprasPage {
 
   editaCompra(codigo, slidingItem: ItemSliding) {
     slidingItem.close();
-    let cod = parseInt(codigo);
+    let cod = codigo;
     this.navCtrl.push(CompraPage, { id: cod, novo: false });
   }
 
   deletaCompra(codigo) {
-    let cod = parseInt(codigo);
+    let cod = codigo;
     this.comprasProvider.deletaCompra(cod).then( response => {
       this.comprasProvider.getCompras().then( dados => {
         this.compras = dados;  

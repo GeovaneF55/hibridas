@@ -1,5 +1,5 @@
 export interface Compra {
-    id: number,
-    idItem: number,
+    id: string,
+    idItem: string,
     quantidade: number
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { CameraPage } from '../camera/camera';
 import { ComprasPage } from '../compras/compras';
 import { ItensPage } from '../itens/itens';
 
@@ -8,8 +9,9 @@ import { ItensPage } from '../itens/itens';
 })
 export class TabsPage {
 
-  tab1Root = ItensPage;
-  tab2Root = ComprasPage;
+  tab1Root = CameraPage;
+  tab2Root = ItensPage;
+  tab3Root = ComprasPage;
 
   constructor() {
 

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Camera</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding="">
+  <p>
+    <img [src]="imagem"/>
+  </p>
+  <ion-fab bottom right>
+    <button ion-fab (click)="tirarFoto()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>
