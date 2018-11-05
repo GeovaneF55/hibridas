@@ -13,8 +13,8 @@ import { Item } from '../../interfaces/Item';
 })
 export class CompraPage {
 
-  idCompra: number;
-  idItemCompra: number;
+  idCompra: String;
+  idItemCompra: String;
   quantidadeCompra: number;
 
   itens: Array<Item>;
@@ -37,11 +37,11 @@ export class CompraPage {
         this.comprasProvider.getCompra(this.idCompra).then( dados => {
           let compra: Compra = dados;
 
-          this.idItemCompra = compra.idItem;
+          this.idItemCompra = JSON.stringify(compra.idItem);
           this.quantidadeCompra = compra.quantidade;
         });
       } else {
-        this.idItemCompra = this.itens[0].id;
+        this.idItemCompra = JSON.stringify(this.itens[0].id);
         this.quantidadeCompra = 1;
       }
     });

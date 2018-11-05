@@ -11,7 +11,7 @@ import { Item } from '../../interfaces/Item';
 })
 export class ItemPage {
 
-  idItem: number;
+  idItem: string;
   nomeItem: string;
   marcaItem: string;
   valorItem: number;

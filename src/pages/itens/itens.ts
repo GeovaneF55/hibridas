@@ -32,12 +32,12 @@ export class ItensPage {
 
   editaItem(codigo, slidingItem: ItemSliding) {
     slidingItem.close();
-    let cod = parseInt(codigo);
+    let cod = codigo;
     this.navCtrl.push(ItemPage, { id: cod, novo: false });
   }
 
   deletaItem(codigo) {
-    let cod = parseInt(codigo);
+    let cod = codigo;
     this.itensProvider.deletaItem(cod).then(response => {
       this.itensProvider.getItens().then( dados => {
         this.itens = dados;

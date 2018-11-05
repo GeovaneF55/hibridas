@@ -1,5 +1,5 @@
 export interface Item {
-    id: number,
+    id: String,
     nome: string,
     marca: string,
     valor: number

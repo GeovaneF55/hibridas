@@ -7,7 +7,7 @@ import { MyApp } from './app.component';
 // FireBase DB
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { firebaseConfig } from './credentials';
+import firebaseConfig from './credentials';
 
 // Pages
 import { TabsPage } from '../pages/tabs/tabs';
